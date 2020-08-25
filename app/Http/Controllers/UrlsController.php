@@ -41,12 +41,13 @@ class UrlsController extends Controller
 
         $check = Urls::firstWhere('url', $validated['url']);
         if($check){
-            return view('welcome')->with('code', $check->code);
+            //dd($check->code);
+            return redirect()->back()->with('code', $check->code);
         } else{
             //Insert
             $check = Urls::create([
                 'url' => $validated['url'],
-                'code' => substr(md5($validated['url'].microtime()), 1, 5),
+                'code' => url('/'.substr(md5($validated['url'].microtime()), 1, 5)),
             ]);
             
         }
@@ -61,6 +62,23 @@ class UrlsController extends Controller
     public function show(Urls $urls)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Urls  $urls
+     * @return \Illuminate\Http\Response
+     */
+    public function redirect($code)
+    {
+        $redirectTo = Urls::firstWhere('code', url('/'.$code));
+        //dd($redirectTo);
+        if($redirectTo){
+            return redirect($redirectTo->url);
+        }
+
+        return redirect()->back()->with('error');
     }
 
     /**

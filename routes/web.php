@@ -15,3 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'UrlsController@index');
 Route::post('/', 'UrlsController@store');
+Route::get('/{code}', 'UrlsController@redirect');
+
+
