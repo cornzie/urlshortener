@@ -46,7 +46,7 @@ class UrlsController extends Controller
             //Insert
             $check = Urls::create([
                 'url' => $validated['url'],
-                'code' => md5(substr($validated['url'].microtime(), 1, rand(2, 5))),
+                'code' => substr(md5($validated['url'].microtime()), 1, 5),
             ]);
             
         }
