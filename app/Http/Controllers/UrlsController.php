@@ -18,16 +18,6 @@ class UrlsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -42,13 +32,16 @@ class UrlsController extends Controller
         $check = Urls::firstWhere('url', $validated['url']);
         if($check){
             //dd($check->code);
-            return redirect()->back()->with('code', $check->code);
+            return view('welcome')->with('code', $check->code);
         } else{
             //Insert
+            $code = url('/'.substr(md5($validated['url'].microtime()), 1, 5));
             $check = Urls::create([
                 'url' => $validated['url'],
-                'code' => url('/'.substr(md5($validated['url'].microtime()), 1, 5)),
+                'code' => $code,
             ]);
+            //dd($code);
+            return view('welcome')->with('code', $code);
             
         }
     }
@@ -56,18 +49,7 @@ class UrlsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Urls  $urls
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Urls $urls)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Urls  $urls
+     * @param  Illuminate\Http\Request  $code
      * @return \Illuminate\Http\Response
      */
     public function redirect($code)
@@ -79,29 +61,6 @@ class UrlsController extends Controller
         }
 
         return redirect()->back()->with('error');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Urls  $urls
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Urls $urls)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Urls  $urls
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Urls $urls)
-    {
-        //
     }
 
     /**

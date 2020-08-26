@@ -18,3 +18,7 @@ Route::post('/', 'UrlsController@store');
 Route::get('/{code}', 'UrlsController@redirect');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
